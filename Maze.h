@@ -1,6 +1,7 @@
 #ifndef MAZE_H
 #define MAZE_H
-
+#include <bits/stdc++.h>
+using namespace std;
 
 class Maze
 {
@@ -8,7 +9,7 @@ class Maze
         int height;
         int width;
         char** cell;
-        enum direction{up,down,right,left};
+        enum direction{up,down,right,left,IN,FRONTR};
     public:
         int** solution;
         Maze(int,int);

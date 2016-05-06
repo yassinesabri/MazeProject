@@ -33,6 +33,8 @@ void Maze::remove_wall(direction d, int i,int j)
         case down: cell[i][j] |= 1<<1;break; //pour 2
         case right: cell[i][j] |= 1<<2;break; //pour 4
         case left: cell[i][j] |= 1<<3;break; //pour 8
+        case IN: cell[i][j] |= 1<<4;break; //16
+        case FRONTR: cell[i][j] |= 1<<5;break; //32
     }
 
 
@@ -68,7 +70,7 @@ bool Maze::is_safe(int i,int j,direction d)
         return true; //marque la cellule 0,0 dans le chemin sans condition
     if(i>=0 && j>=0 && i<height && j<width)
     {
-        if(d==down && cell[i][j]&1) //we check
+        if(d==down && cell[i][j]&1) //we check if going down to cell[i][j] is legal by checking if it has the up wall or not
             return true;
         if(d==right && cell[i][j]&8)
             return true;
@@ -96,6 +98,7 @@ bool Maze::find_path(int i,int j,direction d)
     {
         //marquer la cellule dans le chemin
         solution[i][j]=1;
+
         if(d!=left && find_path(i,j+1,right)) //check right
             return true;
         if(d!=up && find_path(i+1,j,down)) //check down
