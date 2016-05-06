@@ -22,6 +22,7 @@ Maze::Maze(int h,int w)
         for(int j=0;j<w;j++)
             {cell[i][j]= 0;solution[i][j]=0;}
 }
+
 void Maze::set_bit(direction d, int i,int j)
 {
 
@@ -33,10 +34,12 @@ void Maze::set_bit(direction d, int i,int j)
         case left: cell[i][j] |= 1<<3;break; //pour 8
         case IN: cell[i][j] |= 1<<4;break; //16
         case FRONTR: cell[i][j] |= 1<<5;break; //32
+        case BACKTRACK: cell[i][j] |= 1<<6;break; //64
     }
 
 
 }
+
 void Maze::show()
 {
     cout<<endl;
@@ -44,74 +47,74 @@ void Maze::show()
         {
             for(int j=0; j<width; j++)
             {
-                if(!((this->cell[i][j]&8)==8)) //8=L
+                if(!(this->cell[i][j]&8)) //8=L
                     cout<<"|";
                 else cout<<" ";
 
-                if ((!((this->cell[i][j]&2)==2))&&(!((this->cell[i][j]&1)==1))) cout<<"="; //2=D 1=U
-                else if(!((this->cell[i][j]&1)==1))
+                if ((!(this->cell[i][j]&2))&&(!(this->cell[i][j]&1))) cout<<"="; //2=D 1=U
+                else if(!(this->cell[i][j]&1))
                     cout<<"-";
-                else if(!((this->cell[i][j]&2)==2))
+                else if(!(this->cell[i][j]&2))
                     cout<<"_";
                 else
                     cout << " ";
 
-                if(!((this->cell[i][j]&4)==4)) //4=R
+                if(!(this->cell[i][j]&4)) //4=R
                     cout<<"|";
                 else cout<<" ";
             }
             cout<<endl;
         }
 }
-bool Maze::is_safe(int i,int j,direction d)
+
+bool Maze::is_safe(int i,int j)
 {
-    if(i==0 && j==0)
-        return true; //marque la cellule 0,0 dans le chemin sans condition
-    if(i>=0 && j>=0 && i<height && j<width)
+
+    if(i<0 || j<0 || i>=height || j>=width)
     {
-        if(d==down && cell[i][j]&1) //we check if going down to cell[i][j] is legal by checking if it has the up wall or not
-            return true;
-        if(d==right && cell[i][j]&8)
-            return true;
-        if(d==up && cell[i][j]&2)
-            return true;
-        if(d==left && cell[i-1][j]&4)
-            return true;
+        return false;
     }
-    return false;
+    //IF THE CELL IS ALREADY VISTED RETURN FALSE
+    if(cell[i][j]&backt)
+        return false;
+    return true;
 }
+
 //Backtracking
-bool Maze::find_path(int i,int j,direction d)
+void Maze::find_path(int i,int j)
 {
-    if(i==height-1 && j==width-1)
+    int h=height-1;
+    int w=width-1;
+    while(i!=h || j!=w)
     {
-        if(is_safe(i,j,d))
+        //SET_BIT FOR A VISITED CELL
+        if(!(cell[i][j]&backt))
         {
-            solution[i][j]=1;
-            return true;
+            chemin.push(make_pair(i,j));
+            set_bit(BACKTRACK,i,j);
+            cout << i << "," << j <<endl;
         }
-
-        return false;
+        if((cell[i][j]&1) && (is_safe(i-1,j))) //CHECK UP
+            i--;
+        else if((cell[i][j]&2) && (is_safe(i+1,j))) //CHECK DOWN
+            i++;
+        else if((cell[i][j]&4) && (is_safe(i,j+1))) //CHECK RIGHT
+            j++;
+        else if((cell[i][j]&8) && (is_safe(i,j-1))) //CHECK LEFT
+            j--;
+        else
+        {
+            //backtracking
+            chemin.pop();
+            i=chemin.top().first;
+            j=chemin.top().second;
+            cout << i << "," << j <<endl;
+        }
     }
-    if(is_safe(i,j,d))
-    {
-        //marquer la cellule dans le chemin
-        solution[i][j]=1;
-        //cout <<i<<","<<j<<endl;
-        if(d!=left && find_path(i,j+1,right)) //check right
-            return true;
-        if(d!=up && find_path(i+1,j,down)) //check down
-            return true;
-        if(d!=down && find_path(i-1,j,up)) //check up
-          return true;
-        if(d!=right && find_path(i,j-1,left)) //check left
-          return true;
-
-        solution[i][j]=0; //demarquer la cellule car le chemin est bloqué
-        return false;
-    }
-    return false;
+    chemin.push(make_pair(i,j));
+    cout << i << "," << j <<endl;
 }
+
 //void Maze::test()
 //{
 //        cout<<endl;
@@ -130,10 +133,17 @@ bool Maze::find_path(int i,int j,direction d)
 //
 //
 //}
+
 void Maze::show_solution()
 {
-    find_path(0,0,right);
+    find_path(0,0);
     cout <<endl;
+
+    while(!chemin.empty())
+    {
+        solution[chemin.top().first][chemin.top().second]=1;
+        chemin.pop();
+    }
     for(int i=0;i<height;i++)
     {
         for(int j=0;j<width;j++)
