@@ -8,7 +8,7 @@ class Maze
         int height;
         int width;
         char** cell;
-        enum direction{up,down,right,left};
+        enum direction{up,down,right,left,IN,FRONTR};
     public:
         int** solution;
         Maze(int,int);
