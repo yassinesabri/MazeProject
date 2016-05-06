@@ -10,6 +10,7 @@ void Prim::add_frontier(int i,int j,vector<pair<int,int>>& frontier)
             frontier.push_back(make_pair(i,j));
         }
 }
+
 void Prim::marquer_cell(int i,int j,vector<pair<int,int>>& frontier)
 {
     set_bit(IN,i,j);
@@ -19,6 +20,7 @@ void Prim::marquer_cell(int i,int j,vector<pair<int,int>>& frontier)
     add_frontier(i,j+1,frontier);
 
 }
+
 void Prim::neighbors(int i,int j,vector<pair<int,int>>& n)
 {
         if (i>0 && (this->cell[i-1][j]&in)) //in=16
@@ -30,6 +32,7 @@ void Prim::neighbors(int i,int j,vector<pair<int,int>>& n)
         if (j+1<height && (this->cell[i][j+1]&in))
             n.push_back(make_pair(i,j+1));
 }
+
 Prim::direction Prim::to_direction(int fx,int fy,int tx,int ty)
 {
     if (fx < tx)
@@ -41,6 +44,7 @@ Prim::direction Prim::to_direction(int fx,int fy,int tx,int ty)
     if (fy > ty)
         return left;
 }
+
 Prim::Prim(int h,int w):Maze(h,w)
 {
     vector<pair<int,int>> frontier;
@@ -72,6 +76,7 @@ Prim::Prim(int h,int w):Maze(h,w)
         neighbor.clear();
     }
 }
+
 Prim::~Prim()
 {
     //dtor

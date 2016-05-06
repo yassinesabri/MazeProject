@@ -9,8 +9,6 @@ using namespace std;
 class Prim : public Maze
 {
     public:
-        int in=0x10; //16
-        int front=0x20;//32
 
         Prim(int,int);
         ~Prim();
