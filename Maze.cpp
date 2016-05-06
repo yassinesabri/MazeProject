@@ -98,6 +98,7 @@ bool Maze::find_path(int i,int j,direction d)
     {
         //marquer la cellule dans le chemin
         solution[i][j]=1;
+
         if(d!=left && find_path(i,j+1,right)) //check right
             return true;
         if(d!=up && find_path(i+1,j,down)) //check down

@@ -4,7 +4,7 @@ using namespace std;
 
 void Prim::add_frontier(int i,int j,vector<pair<int,int>>& frontier)
 {
-    if(i>=0 && j>=0 && i<width && j<height && !(cell[i][j]&front)) //not FRONTIER //front = 32
+    if(i>=0 && j>=0 && i<width && j<height && !(cell[i][j]&front)) //not yet FRONTIER
         {
             remove_wall(FRONTR,i,j);
             frontier.push_back(make_pair(i,j));

@@ -1,6 +1,7 @@
 #ifndef MAZE_H
 #define MAZE_H
-
+#include <bits/stdc++.h>
+using namespace std;
 
 class Maze
 {
