@@ -6,11 +6,14 @@ using namespace std;
 class Maze
 {
     protected:
+
         int height;
         int width;
         char** cell;
         enum direction{up,down,right,left,IN,FRONTR,BACKTRACK};
+
     public:
+
         int in=0x10; //16
         int front=0x20;//32
         int backt= 0x40; //64
@@ -26,6 +29,7 @@ class Maze
         bool is_safe(int i,int j);
         void show_solution();
     private:
+
 };
 
 #endif // MAZE_H

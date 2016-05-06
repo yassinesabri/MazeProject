@@ -87,12 +87,12 @@ void Maze::find_path(int i,int j)
     int w=width-1;
     while(i!=h || j!=w)
     {
-        //SET_BIT FOR A VISITED CELL
+        //PUSH A NONE VISITED CELL
         if(!(cell[i][j]&backt))
         {
             chemin.push(make_pair(i,j));
             set_bit(BACKTRACK,i,j);
-            cout << i << "," << j <<endl;
+            //cout << i << "," << j <<endl;
         }
         if((cell[i][j]&1) && (is_safe(i-1,j))) //CHECK UP
             i--;
@@ -108,11 +108,11 @@ void Maze::find_path(int i,int j)
             chemin.pop();
             i=chemin.top().first;
             j=chemin.top().second;
-            cout << i << "," << j <<endl;
+            //cout << i << "," << j <<endl;
         }
     }
-    chemin.push(make_pair(i,j));
-    cout << i << "," << j <<endl;
+    chemin.push(make_pair(i,j)); //ADD THE DESTINATION TO THE STACK
+    //cout << i << "," << j <<endl;
 }
 
 //void Maze::test()
