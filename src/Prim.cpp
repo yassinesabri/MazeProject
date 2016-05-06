@@ -6,13 +6,13 @@ void Prim::add_frontier(int i,int j,vector<pair<int,int>>& frontier)
 {
     if(i>=0 && j>=0 && i<width && j<height && !(cell[i][j]&front)) //not yet FRONTIER
         {
-            remove_wall(FRONTR,i,j);
+            set_bit(FRONTR,i,j);
             frontier.push_back(make_pair(i,j));
         }
 }
 void Prim::marquer_cell(int i,int j,vector<pair<int,int>>& frontier)
 {
-    remove_wall(IN,i,j);
+    set_bit(IN,i,j);
     add_frontier(i-1,j,frontier);
     add_frontier(i+1,j,frontier);
     add_frontier(i,j-1,frontier);
@@ -50,7 +50,7 @@ Prim::Prim(int h,int w):Maze(h,w)
     int a,b,x,y,neighbor_x,neighbor_y;
     //start by marking a random cell
     marquer_cell(i1,j1,frontier);
-    remove_wall(FRONTR,i1,j1); //to not add it again in Add_frontier
+    set_bit(FRONTR,i1,j1); //to not add it again in Add_frontier
     //iterate until the frontier set is empty:
     while(!frontier.empty())
     {
@@ -65,8 +65,8 @@ Prim::Prim(int h,int w):Maze(h,w)
         neighbor_x = neighbor[b].first;
         neighbor_y = neighbor[b].second;
         //we record a passage from the neighbor cell to the frontier cell:
-        remove_wall(to_direction(x,y,neighbor_x,neighbor_y),x,y);
-        remove_wall(to_direction(neighbor_x,neighbor_y,x,y),neighbor_x,neighbor_y);
+        set_bit(to_direction(x,y,neighbor_x,neighbor_y),x,y);
+        set_bit(to_direction(neighbor_x,neighbor_y,x,y),neighbor_x,neighbor_y);
         //we mark the frontier cell as being “in” the maze (and add any of its outside neighbors to the frontier):
         marquer_cell(x,y,frontier);
         neighbor.clear();
