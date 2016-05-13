@@ -1,23 +1,13 @@
-#include <bits/stdc++.h>
-#include "Maze.h"
-#include "SideWinder.h"
-#include "Prim.h"
-#include "growing_tree.h"
+#include "menu.h"
+#include <QApplication>
+#include <QDir>
 
-using namespace std;
-
-int main()
+int main(int argc, char *argv[])
 {
-    SideWinder SideMaze(5,5);
-    SideMaze.show();
-    SideMaze.show_solution();
-    Prim PrimMaze(10,10);
-    PrimMaze.show();
-    PrimMaze.show_solution();
-    growing_tree TreeMaze(10,10);
-    TreeMaze.show();
-    TreeMaze.show_solution();
+    //QDir::setCurrent(QCoreApplication::applicationDirPath());
+    QApplication a(argc, argv);
+    menu m;
+    m.show();
 
-
-    return 0;
+    return a.exec();
 }

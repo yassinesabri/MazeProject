@@ -1,5 +1,4 @@
 #include "Prim.h"
-#include <bits/stdc++.h>
 using namespace std;
 
 void Prim::add_frontier(int i,int j,vector<pair<int,int>>& frontier)
@@ -43,6 +42,7 @@ Prim::direction Prim::to_direction(int fx,int fy,int tx,int ty)
         return right;
     if (fy > ty)
         return left;
+    return IN; // to avoid the warning it will never reach this line
 }
 
 Prim::Prim(int h,int w):Maze(h,w)
@@ -64,14 +64,14 @@ Prim::Prim(int h,int w):Maze(h,w)
         y = frontier[a].second;
         frontier.erase(frontier.begin()+a);
         neighbors(x,y,neighbor);
-        //Then we choose a random ìinî neighbor of that frontier cell:
+        //Then we choose a random ‚Äúin‚Äù neighbor of that frontier cell:
         b = rand()%neighbor.size();
         neighbor_x = neighbor[b].first;
         neighbor_y = neighbor[b].second;
         //we record a passage from the neighbor cell to the frontier cell:
         set_bit(to_direction(x,y,neighbor_x,neighbor_y),x,y);
         set_bit(to_direction(neighbor_x,neighbor_y,x,y),neighbor_x,neighbor_y);
-        //we mark the frontier cell as being ìinî the maze (and add any of its outside neighbors to the frontier):
+        //we mark the frontier cell as being ‚Äúin‚Äù the maze (and add any of its outside neighbors to the frontier):
         marquer_cell(x,y,frontier);
         neighbor.clear();
     }
@@ -81,3 +81,5 @@ Prim::~Prim()
 {
     //dtor
 }
+
+

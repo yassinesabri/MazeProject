@@ -1,6 +1,9 @@
 #ifndef SIDEWINDER_H
 #define SIDEWINDER_H
 
+#include <QMainWindow>
+#include <QObject>
+#include <QWidget>
 #include "Maze.h"
 
 

@@ -1,4 +1,4 @@
-#include "Maze.h"
+#include <maze.h>
 #include <ctime>
 #include <bits/stdc++.h>
 
@@ -42,6 +42,7 @@ void Maze::set_bit(direction d, int i,int j)
 
 void Maze::show()
 {
+
     cout<<endl;
     for(int i=0; i<height; i++)
         {
@@ -81,7 +82,7 @@ bool Maze::is_safe(int i,int j)
 }
 
 //Backtracking
-void Maze::find_path(int i,int j)
+void Maze::solve_maze(int i,int j)
 {
     int h=height-1;
     int w=width-1;
@@ -111,53 +112,17 @@ void Maze::find_path(int i,int j)
             //cout << i << "," << j <<endl;
         }
     }
-    chemin.push(make_pair(i,j)); //ADD THE DESTINATION TO THE STACK
+    chemin.push(make_pair(i,j)); //ADD THE DESTINATION(n-1,n-1) TO THE STACK
     //cout << i << "," << j <<endl;
+
+    //RESET the IN,FRONTR,BACKTRACK bits to 0
+    for(int i=0; i<height; i++)
+        for(int j=0; j<width; j++)
+            cell[i][j] &= 15;
 }
 
-//void Maze::test()
-//{
-//        cout<<endl;
-//        //Show cell's value
-//        for(int i=0; i<height; i++)
-//        {
-//            for(int j=0; j<width; j++)
-//            {
-//                //cout << cell[i][j];
-//                bitset<8> y(cell[i][j]);
-//                printf("%d ",y);
-//            }
-//            cout<<endl;
-//        }
-//
-//
-//
-//}
-
-void Maze::show_solution()
-{
-    find_path(0,0);
-    cout <<endl;
-
-    while(!chemin.empty())
-    {
-        solution[chemin.top().first][chemin.top().second]=1;
-        chemin.pop();
-    }
-    for(int i=0;i<height;i++)
-    {
-        for(int j=0;j<width;j++)
-        {
-            if(solution[i][j] == 1)
-                cout <<"# ";
-            else
-                cout<<"- ";
-        }
-        cout <<endl;
-    }
-
-}
 Maze::~Maze()
 {
     delete [] cell;
 }
+
