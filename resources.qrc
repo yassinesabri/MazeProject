@@ -45,5 +45,6 @@
         <file>audio/error.mp3</file>
         <file>audio/move.mp3</file>
         <file>audio/win.mp3</file>
+        <file>audio/lose.mp3</file>
     </qresource>
 </RCC>

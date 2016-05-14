@@ -42,7 +42,7 @@ private:
     int **solution;
     int hint_number=0;
     int gameMute=0,effectMute=0;
-    QMediaPlayer *GameSound_control,*MoveSound,*ErrorSound,*winSound;
+    QMediaPlayer *GameSound_control,*MoveSound,*ErrorSound,*winSound,*loseSound;
     QPushButton *GameSound,*SoundEffect;
 
 

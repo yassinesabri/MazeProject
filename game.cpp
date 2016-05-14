@@ -79,6 +79,8 @@ game::game(int lvl,int avtr)
 
     winSound = new QMediaPlayer();
     winSound->setMedia(QUrl("qrc:/audio/win.mp3"));
+    loseSound = new QMediaPlayer();
+    loseSound->setMedia(QUrl("qrc:/audio/lose.mp3"));
 
 }
 
@@ -89,6 +91,8 @@ void game::exit_app()
        {
            this->close();
            GameSound_control->stop();
+           winSound->stop();
+           loseSound->stop();
            menu *m = new menu;
            m->show();
        }
@@ -112,6 +116,12 @@ void game::hint_box()
 
 void game::solve()
 {
+    if(gameMute==0)
+    {
+       GameSound_control->stop();
+       loseSound->setPosition(0);
+       loseSound->play();
+    }
     solve_game->setEnabled(0);
     hint_game->setEnabled(0);
     QPixmap *key;
@@ -437,6 +447,7 @@ void game:: win()
         {
             this->close();
             winSound->stop();
+            loseSound->stop();
             menu *m = new menu;
             m->show();
         }
