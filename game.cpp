@@ -36,6 +36,14 @@ game::game(int lvl,int avtr)
     solve_game->raise();
     QObject::connect(solve_game,SIGNAL(clicked(bool)),this,SLOT(solve()));
 
+    tryAgain = new QPushButton(this);
+    tryAgain->setGeometry(640,340,150,40);
+    tryAgain->setCursor(Qt::PointingHandCursor);
+    tryAgain->setIcon(QIcon(":/img/again.png"));
+    tryAgain->setIconSize(QSize(150,40));
+    tryAgain->hide();
+    QObject::connect(tryAgain,SIGNAL(clicked(bool)),this,SLOT(again()));
+
     exit_game = new QPushButton(this);
     exit_game->setGeometry(640,420,150,40);
     exit_game->setCursor(Qt::PointingHandCursor);
@@ -116,13 +124,15 @@ void game::hint_box()
 
 void game::solve()
 {
+    is_solved=1;
     if(gameMute==0)
     {
        GameSound_control->stop();
        loseSound->setPosition(0);
        loseSound->play();
     }
-    solve_game->setEnabled(0);
+    solve_game->hide();
+    tryAgain->show();
     hint_game->setEnabled(0);
     QPixmap *key;
     switch(level)
@@ -139,6 +149,24 @@ void game::solve()
 
 
 }
+void game::again()
+{
+    is_solved=0;
+    tryAgain->setEnabled(0);
+    x_position=0;
+    y_position=0;
+    square[0][0].setPixmap(*avatar);
+    for(int i=0;i<dim;i++)
+        for(int j=0;j<dim;j++)
+            if((i!=0 || j!=0) && (i!=dim-1 || j!=dim-1))
+                square[i][j].setPixmap(*empty);
+
+    (*square)->setFocus();
+    if(gameMute==0)
+        GameSound_control->play();
+
+}
+
 void game::GameSound_button()
 {
     if(gameMute == 0)
@@ -153,7 +181,9 @@ void game::GameSound_button()
         GameSound_control->play();
         GameSound->setIcon(QIcon(":/img/on2.png"));
     }
-    (*square)->setFocus();
+    //return the focus to the maze only if the solve button is not clicked yet
+    if(is_solved==0)
+        (*square)->setFocus();
 }
 void game::SoundEffect_button()
 {
@@ -167,7 +197,8 @@ void game::SoundEffect_button()
         effectMute=0;
         SoundEffect->setIcon(QIcon(":/img/on1.png"));
     }
-    (*square)->setFocus();
+    if(is_solved==0)
+        (*square)->setFocus();
 }
 
 void game::set_game(int lvl, int avtr)

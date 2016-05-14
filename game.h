@@ -31,6 +31,7 @@ private:
     QPushButton *exit_game;
     QPushButton *solve_game;
     QPushButton *hint_game;
+    QPushButton *tryAgain;
     QLabel *timing;
     QLabel *maze_grid;
     Maze * maze;
@@ -41,7 +42,7 @@ private:
     QPixmap *avatar,*flag,*empty;
     int **solution;
     int hint_number=0;
-    int gameMute=0,effectMute=0;
+    int gameMute=0,effectMute=0,is_solved=0;
     QMediaPlayer *GameSound_control,*MoveSound,*ErrorSound,*winSound,*loseSound;
     QPushButton *GameSound,*SoundEffect;
 
@@ -55,6 +56,7 @@ public slots:
     void GameSound_button();
     void SoundEffect_button();
     void win();
+    void again();
 
 
 };
