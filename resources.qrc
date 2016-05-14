@@ -46,5 +46,6 @@
         <file>audio/move.mp3</file>
         <file>audio/win.mp3</file>
         <file>audio/lose.mp3</file>
+        <file>audio/game_sound2.mp3</file>
     </qresource>
 </RCC>
