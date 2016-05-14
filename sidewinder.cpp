@@ -29,6 +29,7 @@ SideWinder::SideWinder(int a,int b) : Maze(a,b)
             }
         }
     }
+    solve_maze(0,0);
 }
 
 SideWinder::~SideWinder()

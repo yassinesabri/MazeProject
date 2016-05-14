@@ -75,6 +75,7 @@ Prim::Prim(int h,int w):Maze(h,w)
         marquer_cell(x,y,frontier);
         neighbor.clear();
     }
+    solve_maze(0,0);
 }
 
 Prim::~Prim()

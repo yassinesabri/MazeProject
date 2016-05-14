@@ -20,7 +20,6 @@ class Maze
         int front=0x20;//32
         int backt= 0x40; //64
 
-        int** solution;
         stack<pair<int,int>> chemin;
         Maze(int,int);
         virtual ~Maze();

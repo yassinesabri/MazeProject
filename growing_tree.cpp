@@ -61,6 +61,7 @@ growing_tree::growing_tree(int a,int b) : Maze(a,b)
           if(!neighbor_found)
             pile.pop();
         }
+      solve_maze(0,0);
 
 }
 

@@ -31,11 +31,11 @@ menu::menu(QWidget *parent) : QWidget(parent)
     if(is_muted == 1)
     {
         music->play();
-        music_control->setIcon(QIcon(":/img/on2.png"));
+        music_control->setIcon(QIcon(":/img/on.png"));
     }
     else
     {
-        music_control->setIcon(QIcon(":/img/off2.png"));
+        music_control->setIcon(QIcon(":/img/off.png"));
     }
 
 
@@ -100,7 +100,7 @@ menu::menu(QWidget *parent) : QWidget(parent)
     avatar = new QComboBox(this);
     avatar->setGeometry(390,405,180,22);
     avatar->addItem("Mario");
-    avatar->addItem("Cercle");
+    avatar->addItem("Circle");
     avatar->addItem("Bee");
     avatar->setStyleSheet("background: #FFFFFF;");
     avatar->raise();
@@ -142,13 +142,13 @@ void menu::menu_sound()
         is_muted=0;
         //music->setPosition(0);
         music->pause();
-        music_control->setIcon(QIcon(":/img/off2.png"));
+        music_control->setIcon(QIcon(":/img/off.png"));
     }
     else if(is_muted == 0 || music->state() == QMediaPlayer::StoppedState)
     {
         is_muted=1;
         music->play();
-        music_control->setIcon(QIcon(":/img/on2.png"));
+        music_control->setIcon(QIcon(":/img/on.png"));
     }
 
 }

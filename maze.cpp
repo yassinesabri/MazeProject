@@ -14,13 +14,9 @@ Maze::Maze(int h,int w)
     for(int i=0;i<h;i++)
         cell[i] = new char[w];
 
-    solution = new int*[h];
-    for(int i=0;i<h;i++)
-        solution[i] = new int[w];
-
     for(int i=0;i<h;i++)
         for(int j=0;j<w;j++)
-            {cell[i][j]= 0;solution[i][j]=0;}
+            cell[i][j]= 0;
 }
 
 void Maze::set_bit(direction d, int i,int j)

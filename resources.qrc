@@ -13,17 +13,13 @@
         <file>img/solve.png</file>
         <file>img/timing.png</file>
         <file>img/game_bg.png</file>
-        <file>audio/Mario.mp3</file>
         <file>audio/bg_sound.mp3</file>
         <file>img/off.png</file>
         <file>img/on.png</file>
-        <file>img/on2.png</file>
-        <file>img/off2.png</file>
         <file>img/play2.png</file>
         <file>img/help2.png</file>
         <file>img/credits2.png</file>
         <file>img/exit2.png</file>
-        <file>img/maze_bg.png</file>
         <file>img/hard0.png</file>
         <file>img/medium0.png</file>
         <file>img/easy0.png</file>
@@ -38,5 +34,16 @@
         <file>img/flag0.png</file>
         <file>img/flag1.png</file>
         <file>img/flag2.png</file>
+        <file>img/solution0.png</file>
+        <file>img/solution1.png</file>
+        <file>img/solution2.png</file>
+        <file>audio/game_sound.mp3</file>
+        <file>img/off1.png</file>
+        <file>img/on1.png</file>
+        <file>img/off2.png</file>
+        <file>img/on2.png</file>
+        <file>audio/error.mp3</file>
+        <file>audio/move.mp3</file>
+        <file>audio/win.mp3</file>
     </qresource>
 </RCC>
