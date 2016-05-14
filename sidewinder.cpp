@@ -29,11 +29,11 @@ SideWinder::SideWinder(int a,int b) : Maze(a,b)
             }
         }
     }
-
-
 }
 
 SideWinder::~SideWinder()
 {
     //dtor
 }
+
+

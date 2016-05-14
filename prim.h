@@ -1,6 +1,9 @@
 #ifndef PRIM_H
 #define PRIM_H
 
+#include <QMainWindow>
+#include <QObject>
+#include <QWidget>
 #include "Maze.h"
 #include <bits/stdc++.h>
 
