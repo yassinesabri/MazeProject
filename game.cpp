@@ -162,8 +162,10 @@ void game::again()
                 square[i][j].setPixmap(*empty);
 
     (*square)->setFocus();
-    if(gameMute==0)
+    if(gameMute==0){
+        GameSound_control->setPosition(0);
         GameSound_control->play();
+    }
 
 }
 
@@ -172,13 +174,15 @@ void game::GameSound_button()
     if(gameMute == 0)
     {
         gameMute=1;
-        GameSound_control->pause();
+        if(is_solved==0)
+            GameSound_control->pause();
         GameSound->setIcon(QIcon(":/img/off2.png"));
     }
     else
     {
         gameMute=0;
-        GameSound_control->play();
+        if(is_solved==0)
+            GameSound_control->play();
         GameSound->setIcon(QIcon(":/img/on2.png"));
     }
     //return the focus to the maze only if the solve button is not clicked yet
