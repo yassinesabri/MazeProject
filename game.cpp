@@ -1,6 +1,8 @@
 #include "game.h"
 #include <QMessageBox>
 #include "qevent.h"
+#include <QTime>
+#include <QTimer>
 using namespace std;
 
 game::game(int lvl,int avtr)
@@ -53,11 +55,42 @@ game::game(int lvl,int avtr)
     QObject::connect(exit_game,SIGNAL(clicked(bool)),this,SLOT(exit_app()));
 
     QString text("TIMING");
+    time=new QLabel(this);
+    time->setGeometry(640,20,150,40);
+    QPixmap *test3=new QPixmap(":/img/timing.png");
+    time->setPixmap(*test3);
     timing = new QLabel(text,this);
-    timing->setGeometry(640,60,150,40);
-    QPixmap *tim = new QPixmap(":/img/timing.png");
+    test=new QLabel(text,this);
+    timing->setGeometry(640,61,150,40);
+    QPixmap *tim = new QPixmap(":/img/time.png");
     timing->setPixmap(*tim);
+    test->setGeometry(640,61,150,40);
+    test->setText(std::to_string(k).c_str());
+    test->setAlignment(Qt::AlignCenter);
+    test->setFont(QFont("verdana",20,5,false));
     timing->raise();
+    test->raise();
+
+
+    scoring=new QLabel(this);
+    scoring->setGeometry(640,119,150,40);
+    scoring->setPixmap(*tim);
+    point=new QLabel(this);
+    point->setGeometry(640,160,150,40);
+    point->setPixmap(*tim);
+    test2=new QLabel (this);
+    test2->setGeometry(640,160,150,40);
+    test2->setText(std::to_string(score).c_str());
+    test2->setAlignment(Qt::AlignCenter);
+    test2->setFont(QFont("verdana",20,5,false));
+    point->raise();
+    test2->raise();
+
+
+    timer=new QTimer(this);
+    QObject::connect(timer,SIGNAL(timeout()),this,SLOT(My_timer()));
+    timer->start(1000);
+
 
     //Set Music
     GameSound = new QPushButton(this);
@@ -90,10 +123,13 @@ game::game(int lvl,int avtr)
     loseSound = new QMediaPlayer();
     loseSound->setMedia(QUrl("qrc:/audio/lose.mp3"));
 
+
+
 }
 
 void game::exit_app()
 {
+    timer->stop();
     int choix = QMessageBox::question(this,"Exit","You would like to go to the menu ?",QMessageBox::Yes | QMessageBox::No);
        if(choix == QMessageBox::Yes)
        {
@@ -109,6 +145,7 @@ void game::exit_app()
 }
 void game::hint_box()
 {
+    k-=5;
     if(solution[x_position][y_position]==1 && hint_number>0)
             QMessageBox::information(this,"Hint Box","You are on the right path ^_^");
     else
@@ -124,6 +161,7 @@ void game::hint_box()
 
 void game::solve()
 {
+    timer->stop();
     is_solved=1;
     if(gameMute==0)
     {
@@ -151,6 +189,7 @@ void game::solve()
 }
 void game::again()
 {
+    timer->start(1000);
     is_solved=0;
     tryAgain->setEnabled(0);
     x_position=0;
@@ -162,29 +201,32 @@ void game::again()
                 square[i][j].setPixmap(*empty);
 
     (*square)->setFocus();
-    if(gameMute==0){
-        GameSound_control->setPosition(0);
-        GameSound_control->play();
-    }
+        if(gameMute==0){
+               GameSound_control->setPosition(0);
+                 GameSound_control->play();
+           }
 
 }
 
 void game::GameSound_button()
 {
+
     if(gameMute == 0)
-    {
-        gameMute=1;
-        if(is_solved==0)
-            GameSound_control->pause();
-        GameSound->setIcon(QIcon(":/img/off2.png"));
-    }
-    else
-    {
-        gameMute=0;
-        if(is_solved==0)
-            GameSound_control->play();
-        GameSound->setIcon(QIcon(":/img/on2.png"));
-    }
+         {
+             gameMute=1;
+            //GameSound_control->pause();
+          if(is_solved==0)
+               GameSound_control->pause();
+             GameSound->setIcon(QIcon(":/img/off2.png"));
+         }
+         else
+         {
+             gameMute=0;
+          //GameSound_control->play();
+           if(is_solved==0)
+               GameSound_control->play();
+             GameSound->setIcon(QIcon(":/img/on2.png"));
+         }
     //return the focus to the maze only if the solve button is not clicked yet
     if(is_solved==0)
         (*square)->setFocus();
@@ -209,9 +251,9 @@ void game::set_game(int lvl, int avtr)
 {
     switch(lvl)
     {
-        case 0:{dim=10;maze = new SideWinder(dim,dim);hint_number=1;break;}
-        case 1:{dim=18;maze = new Prim(dim,dim);hint_number=2;break;}
-        case 2:{dim=25;maze = new growing_tree(dim,dim);hint_number=3;break;}
+        case 0:{dim=10;maze = new SideWinder(dim,dim);hint_number=1;k=20;initial=20;break;}
+        case 1:{dim=18;maze = new Prim(dim,dim);hint_number=2;k=45;initial=45;break;}
+        case 2:{dim=25;maze = new growing_tree(dim,dim);hint_number=3;k=75;initial=75;break;}
     }
 
     //set empty Pixmap : switching in term of cells
@@ -460,16 +502,13 @@ void game::keyPressEvent ( QKeyEvent * event)
     else
       event->ignore();
 
-
-
-    if(x_position==dim-1 && y_position==dim-1) win();
-
 }
 
 
 
 void game:: win()
 {
+    timer->stop();
      if(gameMute==0)
      {
         GameSound_control->stop();
@@ -488,4 +527,60 @@ void game:: win()
         }
         else if(choix == QMessageBox::No)
              qApp->quit();
+}
+void game:: lose()
+{
+    timer->stop();
+    if(gameMute==0)
+    {
+       GameSound_control->stop();
+       loseSound->setPosition(0);
+       loseSound->play();
+    }
+    QMessageBox::information(this,"GAME OVER","Game Over You lose :-(");
+    int choix = QMessageBox::question(this,"Replay","Choose your level and replay  ?",QMessageBox::Yes | QMessageBox::No);
+       if(choix == QMessageBox::Yes)
+       {
+           this->close();
+           winSound->stop();
+           loseSound->stop();
+           menu *m = new menu;
+           m->show();
+       }
+       else if(choix == QMessageBox::No)
+            qApp->quit();
+}
+
+void game:: My_timer()
+{
+
+    if(k==0) {lose();}
+    if(x_position==dim-1 && y_position==dim-1) {win();}
+    k--;
+    if(k>=6)
+    {
+        test->setText(std::to_string(k).c_str());
+    }
+    if(k<=5)
+    {
+        if(gameMute==0)
+        {
+            GameSound_control->setMedia(QUrl("qrc:/audio/Danger.mp3"));
+            GameSound_control->play();
+        }
+        QPixmap *late=new QPixmap(":/img/Rec.png");
+        timing->setPixmap(*late);
+        timing->setGeometry(640,61,150,40);
+        test->setGeometry(640,61,150,40);
+        test->setText(std::to_string(k).c_str());
+        test->setAlignment(Qt::AlignCenter);
+        test->setFont(QFont("verdana",20,5,false));
+        timing->raise();
+        test->raise();
+
+
+    }
+    score=(100*k)/initial;
+    test2->setText(std::to_string(score).c_str());
+
 }

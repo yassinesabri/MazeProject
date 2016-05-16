@@ -15,14 +15,15 @@
 #include <QGridLayout>
 #include <QMediaPlayer>
 #include <QKeyEvent>
-
+#include <QTime>
+#include <QTimer>
 using namespace std;
 
 class game : public QWidget
 {
     Q_OBJECT
 public:
-    int x_position=0,y_position=0;
+    int x_position=0,y_position=0,k,score=100,initial;
     game(int lvl=0, int avtr=0);
     void set_game(int lvl,int avtr);
     void generate_maze();
@@ -33,18 +34,21 @@ private:
     QPushButton *hint_game;
     QPushButton *tryAgain;
     QLabel *timing;
+    QLabel *test,*test2;
+    QLabel *point,*scoring,*time;
     QLabel *maze_grid;
     Maze * maze;
     int level=0,dim=0;
     QLabel **square;
     QWidget *game_space;
     QGridLayout *game_layout;
-    QPixmap *avatar,*flag,*empty;
+    QPixmap *avatar,*flag,*empty,*late;
     int **solution;
     int hint_number=0;
     int gameMute=0,effectMute=0,is_solved=0;
-    QMediaPlayer *GameSound_control,*MoveSound,*ErrorSound,*winSound,*loseSound;
+    QMediaPlayer *GameSound_control,*MoveSound,*ErrorSound,*winSound,*loseSound,*DangerSound;
     QPushButton *GameSound,*SoundEffect;
+    QTimer *timer;
 
 
 signals:
@@ -56,7 +60,9 @@ public slots:
     void GameSound_button();
     void SoundEffect_button();
     void win();
+    void lose();
     void again();
+    void My_timer();
 
 
 };
