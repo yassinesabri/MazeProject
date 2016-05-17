@@ -48,5 +48,13 @@
         <file>audio/lose.mp3</file>
         <file>audio/game_sound2.mp3</file>
         <file>img/again.png</file>
+        <file>img/again2.png</file>
+        <file>img/exit_new2.png</file>
+        <file>img/hint2.png</file>
+        <file>img/solve2.png</file>
+        <file>audio/danger.mp3</file>
+        <file>img/bg.png</file>
+        <file>img/danger.png</file>
+        <file>img/score.png</file>
     </qresource>
 </RCC>

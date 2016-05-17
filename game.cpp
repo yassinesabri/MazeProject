@@ -1,6 +1,8 @@
 #include "game.h"
 #include <QMessageBox>
 #include "qevent.h"
+#include <QTime>
+#include <QTimer>
 using namespace std;
 
 game::game(int lvl,int avtr)
@@ -53,11 +55,46 @@ game::game(int lvl,int avtr)
     QObject::connect(exit_game,SIGNAL(clicked(bool)),this,SLOT(exit_app()));
 
     QString text("TIMING");
+    time_board =new QLabel(this);
+    time_board->setGeometry(640,20,150,40);
+    QPixmap *time_b=new QPixmap(":/img/timing.png");
+    time_board->setPixmap(*time_b);
+
+    time_bg = new QLabel(text,this);
+    time_bg->setGeometry(640,61,150,40);
+    QPixmap *bgg = new QPixmap(":/img/bg.png");
+    time_bg->setPixmap(*bgg);
+    time_bg->raise();
+
     timing = new QLabel(text,this);
-    timing->setGeometry(640,60,150,40);
-    QPixmap *tim = new QPixmap(":/img/timing.png");
-    timing->setPixmap(*tim);
+    timing->setGeometry(640,61,150,40);
+    timing->setText(to_string(time).c_str());
+    timing->setAlignment(Qt::AlignCenter);
+    timing->setFont(QFont("verdana",20,5,false));
     timing->raise();
+
+    score_board=new QLabel(this);
+    score_board->setGeometry(640,119,150,40);
+    QPixmap *scorr = new QPixmap(":/img/score.png");
+    score_board->setPixmap(*scorr);
+
+    score_bg=new QLabel(this);
+    score_bg->setGeometry(640,160,150,40);
+    score_bg->setPixmap(*bgg);
+    score_bg->raise();
+
+    scoring=new QLabel (this);
+    scoring->setGeometry(640,160,150,40);
+    scoring->setText(to_string(score).c_str());
+    scoring->setAlignment(Qt::AlignCenter);
+    scoring->setFont(QFont("verdana",20,5,false));
+    scoring->raise();
+
+
+    timer=new QTimer(this);
+    QObject::connect(timer,SIGNAL(timeout()),this,SLOT(My_timer()));
+    timer->start(1000);
+
 
     //Set Music
     GameSound = new QPushButton(this);
@@ -89,11 +126,16 @@ game::game(int lvl,int avtr)
     winSound->setMedia(QUrl("qrc:/audio/win.mp3"));
     loseSound = new QMediaPlayer();
     loseSound->setMedia(QUrl("qrc:/audio/lose.mp3"));
+    dangerSound = new QMediaPlayer();
+    dangerSound->setMedia(QUrl("qrc:/audio/danger.mp3"));
+
+
 
 }
 
 void game::exit_app()
 {
+    timer->stop();
     int choix = QMessageBox::question(this,"Exit","You would like to go to the menu ?",QMessageBox::Yes | QMessageBox::No);
        if(choix == QMessageBox::Yes)
        {
@@ -109,6 +151,7 @@ void game::exit_app()
 }
 void game::hint_box()
 {
+    time-=5;
     if(solution[x_position][y_position]==1 && hint_number>0)
             QMessageBox::information(this,"Hint Box","You are on the right path ^_^");
     else
@@ -124,6 +167,7 @@ void game::hint_box()
 
 void game::solve()
 {
+    timer->stop();
     is_solved=1;
     if(gameMute==0)
     {
@@ -151,6 +195,16 @@ void game::solve()
 }
 void game::again()
 {
+    switch(level)
+    {
+        case 0:{score=100;time=20;initial=20;break;}
+        case 1:{score=100;time=45;initial=45;break;}
+        case 2:{score=100;time=75;initial=75;break;}
+    }
+    timer->start(1000);
+    scoring->setText(to_string(score).c_str());
+    timing->setText(to_string(time).c_str());
+
     is_solved=0;
     tryAgain->setEnabled(0);
     x_position=0;
@@ -162,29 +216,30 @@ void game::again()
                 square[i][j].setPixmap(*empty);
 
     (*square)->setFocus();
-    if(gameMute==0){
-        GameSound_control->setPosition(0);
-        GameSound_control->play();
-    }
+        if(gameMute==0){
+                 GameSound_control->setPosition(0);
+                 GameSound_control->play();
+           }
 
 }
 
 void game::GameSound_button()
 {
+
     if(gameMute == 0)
-    {
-        gameMute=1;
-        if(is_solved==0)
-            GameSound_control->pause();
-        GameSound->setIcon(QIcon(":/img/off2.png"));
-    }
-    else
-    {
-        gameMute=0;
-        if(is_solved==0)
-            GameSound_control->play();
-        GameSound->setIcon(QIcon(":/img/on2.png"));
-    }
+         {
+             gameMute=1;
+             if(is_solved==0)
+                GameSound_control->pause();
+             GameSound->setIcon(QIcon(":/img/off2.png"));
+         }
+         else
+         {
+             gameMute=0;
+             if(is_solved==0)
+                 GameSound_control->play();
+             GameSound->setIcon(QIcon(":/img/on2.png"));
+         }
     //return the focus to the maze only if the solve button is not clicked yet
     if(is_solved==0)
         (*square)->setFocus();
@@ -209,9 +264,9 @@ void game::set_game(int lvl, int avtr)
 {
     switch(lvl)
     {
-        case 0:{dim=10;maze = new SideWinder(dim,dim);hint_number=1;break;}
-        case 1:{dim=18;maze = new Prim(dim,dim);hint_number=2;break;}
-        case 2:{dim=25;maze = new growing_tree(dim,dim);hint_number=3;break;}
+        case 0:{dim=10;maze = new SideWinder(dim,dim);hint_number=1;time=20;initial=20;break;}
+        case 1:{dim=18;maze = new Prim(dim,dim);hint_number=2;time=45;initial=45;break;}
+        case 2:{dim=25;maze = new growing_tree(dim,dim);hint_number=3;time=75;initial=75;break;}
     }
 
     //set empty Pixmap : switching in term of cells
@@ -460,32 +515,83 @@ void game::keyPressEvent ( QKeyEvent * event)
     else
       event->ignore();
 
-
-
-    if(x_position==dim-1 && y_position==dim-1) win();
-
 }
 
 
 
 void game:: win()
 {
+    timer->stop();
      if(gameMute==0)
      {
         GameSound_control->stop();
+        dangerSound->stop();
         winSound->setPosition(0);
         winSound->play();
      }
-     QMessageBox::information(this,"GAME OVER","Game Over You win");
+     QMessageBox::information(this,"GAME OVER","Game Over You win.");
      int choix = QMessageBox::question(this,"Replay","Choose your level and replay  ?",QMessageBox::Yes | QMessageBox::No);
         if(choix == QMessageBox::Yes)
         {
             this->close();
             winSound->stop();
             loseSound->stop();
+            dangerSound->stop();
             menu *m = new menu;
             m->show();
         }
         else if(choix == QMessageBox::No)
              qApp->quit();
+}
+void game:: lose()
+{
+    timer->stop();
+    if(gameMute==0)
+    {
+       GameSound_control->stop();
+       loseSound->setPosition(0);
+       loseSound->play();
+    }
+    QMessageBox::information(this,"GAME OVER","Game Over You lose :-(");
+    int choix = QMessageBox::question(this,"Replay","Choose your level and replay  ?",QMessageBox::Yes | QMessageBox::No);
+       if(choix == QMessageBox::Yes)
+       {
+           this->close();
+           winSound->stop();
+           loseSound->stop();
+           dangerSound->stop();
+           menu *m = new menu;
+           m->show();
+       }
+       else if(choix == QMessageBox::No)
+            qApp->quit();
+}
+
+void game:: My_timer()
+{
+
+    if(time==0)
+        lose();
+    if(x_position==dim-1 && y_position==dim-1)
+        win();
+
+    time--;
+    if(time>=6)
+    {
+        timing->setText(to_string(time).c_str());
+    }
+    if(time<=5)
+    {
+        if(gameMute==0)
+        {
+            //GameSound_control->stop();
+            //dangerSound->play();
+        }
+        QPixmap *late=new QPixmap(":/img/danger.png");
+        time_bg->setPixmap(*late);
+        timing->setText(to_string(time).c_str());
+    }
+    score=(100*time)/initial;
+    scoring->setText(to_string(score).c_str());
+
 }
