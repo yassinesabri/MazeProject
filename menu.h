@@ -24,7 +24,7 @@ private:
     QWidget *about_page;
     QWidget *help_page;
     QComboBox *levels;
-    QMediaPlayer * music;
+    QMediaPlayer *music;
     QPushButton *music_control;
     static int is_muted;
     QComboBox *avatar;
