@@ -513,6 +513,10 @@ void game::keyPressEvent ( QKeyEvent * event)
 void game::win()
 {
     timer->stop();
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
     best.push_back(score);
     freopen("score.txt","a+",stdout);
     for(unsigned int i=0;i<best.size();i++)

@@ -41,7 +41,11 @@ public slots:
     void help();
     void new_game();
     void menu_sound();
+<<<<<<< HEAD
     void score();
+=======
+    void list();
+>>>>>>> origin/master
 };
 
 #endif // MENU_H

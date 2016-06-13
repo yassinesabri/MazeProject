@@ -78,7 +78,11 @@ menu::menu(QWidget *parent) : QWidget(parent)
     QObject::connect(score_list,SIGNAL(clicked(bool)),this,SLOT(score()));
 
     exit_button = new QPushButton(this);
+<<<<<<< HEAD
     exit_button->setGeometry(50,480,150,40);
+=======
+    exit_button->setGeometry(50,510,150,40);
+>>>>>>> origin/master
     exit_button->setCursor(Qt::PointingHandCursor);
     exit_button->setIcon(QIcon(":/img/exit2.png"));
     exit_button->setIconSize(QSize(150,40));
@@ -118,6 +122,16 @@ menu::menu(QWidget *parent) : QWidget(parent)
     avatar->raise();
 
 
+<<<<<<< HEAD
+=======
+    score_list = new QPushButton(this);
+    score_list->setGeometry(50,440,150,40);
+    score_list->setCursor(Qt::PointingHandCursor);
+    score_list->setIcon(QIcon(":/img/topScore.png"));
+    score_list->setIconSize(QSize(150,40));
+    score_list->raise();
+    QObject::connect(score_list,SIGNAL(clicked(bool)),this,SLOT(list()));
+>>>>>>> origin/master
 
 }
 
@@ -165,7 +179,11 @@ void menu::menu_sound()
     }
 }
 
+<<<<<<< HEAD
 void menu:: score()
+=======
+void menu:: list()
+>>>>>>> origin/master
 {
     freopen("score.txt","a+",stdin);
     int x;
@@ -180,6 +198,7 @@ void menu:: score()
     string r="";
     for(int k=0;k<5;k++)
     {
+<<<<<<< HEAD
         r+="Score ";
         r+=to_string(k+1);
         r+=": ";
@@ -209,6 +228,21 @@ void menu:: score()
     board->setStyleSheet("QLabel {color : white; }");
     board->raise();
     score_page->show();
+=======
+        r+=to_string(k+1);
+        r+=")- ";
+        r+=to_string(best[k]);
+        r+="   \n";
+    }
+    QMessageBox m;
+    m.setBaseSize(QSize(600, 120));
+    m.setWindowTitle("SCORES");
+    m.setIcon(QMessageBox::Information);
+    m.setText(r.c_str());
+    m.exec();
+
+
+>>>>>>> origin/master
 
 }
 
