@@ -56,5 +56,8 @@
         <file>img/bg.png</file>
         <file>img/danger.png</file>
         <file>img/score.png</file>
+        <file>audio/Danger2.wav</file>
+        <file>img/topScore.png</file>
+        <file>img/scoreboard.png</file>
     </qresource>
 </RCC>

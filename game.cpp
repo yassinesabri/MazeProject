@@ -3,6 +3,8 @@
 #include "qevent.h"
 #include <QTime>
 #include <QTimer>
+#include <QDebug>
+#include "bits/stdc++.h"
 using namespace std;
 
 game::game(int lvl,int avtr)
@@ -508,13 +510,15 @@ void game::keyPressEvent ( QKeyEvent * event)
 
 }
 
-
-
 void game::win()
 {
-    DangerSound->stop();
-    //delete DangerSound;
     timer->stop();
+
+    best.push_back(score);
+    freopen("score.txt","a+",stdout);
+    for(unsigned int i=0;i<best.size();i++)
+      cout<<best[i]<<"\n";
+     time=0;
      if(gameMute==0)
      {
         GameSound_control->stop();
@@ -539,8 +543,9 @@ void game::win()
 void game::lose()
 {
     DangerSound->stop();
-    //delete DangerSound;
+   // delete DangerSound;
     timer->stop();
+
     if(gameMute==0)
     {
        GameSound_control->stop();
@@ -566,21 +571,27 @@ void game::My_timer()
 {
 
     if(time==0)
+    {
         lose();
+
+    }
     if(x_position==dim-1 && y_position==dim-1)
+       {
         win();
+       }
 
     time--;
     if(time>=6)
     {
         timing->setText(to_string(time).c_str());
     }
-    if(time<=5)
+    if(time>0 &&time<=5)
     {
-        if(gameMute==0)
+        if(effectMute==0)
         {
-            GameSound_control->stop();
-            DangerSound->play();
+            GameSound_control->setMedia(QUrl("qrc:/audio/danger.mp3"));
+            GameSound_control->play();
+
         }
         QPixmap *late=new QPixmap(":/img/danger.png");
         time_bg->setPixmap(*late);

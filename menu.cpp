@@ -1,7 +1,11 @@
 #include "menu.h"
 #include <QUrl>
+#include "bits/stdc++.h"
+#include <QDebug>
+#include <QString>
+#include <QMessageBox>
 
-
+using namespace std;
 int menu::is_muted=1;
 
 
@@ -66,7 +70,7 @@ menu::menu(QWidget *parent) : QWidget(parent)
     QObject::connect(about_button,SIGNAL(clicked(bool)),this,SLOT(about()));
 
     exit_button = new QPushButton(this);
-    exit_button->setGeometry(50,440,150,40);
+    exit_button->setGeometry(50,510,150,40);
     exit_button->setCursor(Qt::PointingHandCursor);
     exit_button->setIcon(QIcon(":/img/exit2.png"));
     exit_button->setIconSize(QSize(150,40));
@@ -105,6 +109,14 @@ menu::menu(QWidget *parent) : QWidget(parent)
     avatar->setStyleSheet("background: #FFFFFF;");
     avatar->raise();
 
+
+    score_list = new QPushButton(this);
+    score_list->setGeometry(50,440,150,40);
+    score_list->setCursor(Qt::PointingHandCursor);
+    score_list->setIcon(QIcon(":/img/topScore.png"));
+    score_list->setIconSize(QSize(150,40));
+    score_list->raise();
+    QObject::connect(score_list,SIGNAL(clicked(bool)),this,SLOT(list()));
 
 }
 
@@ -150,6 +162,37 @@ void menu::menu_sound()
         music->play();
         music_control->setIcon(QIcon(":/img/on.png"));
     }
+}
+
+void menu:: list()
+{
+    freopen("score.txt","a+",stdin);
+    int x;
+    unsigned int i=0;
+    while(cin>>x && i<100)
+    {
+        best[i++]=x;
+    }
+    sort(best,best+100);
+    reverse(best,best+100);
+
+    string r="";
+    for(int k=0;k<5;k++)
+    {
+        r+=to_string(k+1);
+        r+=")- ";
+        r+=to_string(best[k]);
+        r+="   \n";
+    }
+    QMessageBox m;
+    m.setBaseSize(QSize(600, 120));
+    m.setWindowTitle("SCORES");
+    m.setIcon(QMessageBox::Information);
+    m.setText(r.c_str());
+    m.exec();
+
+
 
 }
+
 

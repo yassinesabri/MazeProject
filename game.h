@@ -27,8 +27,12 @@ public:
     game(int lvl=0, int avtr=0);
     void set_game(int lvl,int avtr);
     void generate_maze();
-    void keyPressEvent (QKeyEvent * event);
+    void win();
+    void lose();
+    std::vector<int> best;
+
 private:
+
     QPushButton *exit_game;
     QPushButton *solve_game;
     QPushButton *hint_game;
@@ -49,7 +53,6 @@ private:
     QPushButton *GameSound,*SoundEffect;
     QTimer *timer;
 
-
 signals:
 
 public slots:
@@ -58,11 +61,10 @@ public slots:
     void solve();
     void GameSound_button();
     void SoundEffect_button();
-    void win();
-    void lose();
+
     void again();
     void My_timer();
-
+    void keyPressEvent (QKeyEvent * event);
 
 };
 
