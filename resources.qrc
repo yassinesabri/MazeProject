@@ -58,17 +58,7 @@
         <file>img/solution2.png</file>
         <file>img/solve.png</file>
         <file>img/solve2.png</file>
-<<<<<<< HEAD
         <file>img/timing.png</file>
         <file>img/topScore.png</file>
-=======
-        <file>audio/danger.mp3</file>
-        <file>img/bg.png</file>
-        <file>img/danger.png</file>
-        <file>img/score.png</file>
-        <file>audio/Danger2.wav</file>
-        <file>img/topScore.png</file>
-        <file>img/scoreboard.png</file>
->>>>>>> origin/master
     </qresource>
 </RCC>
