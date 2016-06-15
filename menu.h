@@ -16,7 +16,6 @@ class menu : public QWidget
     Q_OBJECT
 public:
     menu(QWidget *parent = 0);
-    int best[100]={};
 private:
     QPushButton *play_button;
     QPushButton *about_button;
