@@ -29,6 +29,7 @@ public:
     void generate_maze();
     void win();
     void lose();
+    void write() ;
     std::vector<int> best;
 
 private:

@@ -3,6 +3,7 @@
 #include "bits/stdc++.h"
 #include <QDebug>
 #include <QString>
+#include <QFile>
 #include <QMessageBox>
 
 using namespace std;
@@ -167,30 +168,43 @@ void menu::menu_sound()
 
 void menu:: score()
 {
-    freopen("score.txt","a+",stdin);
-    int x;
-    unsigned int i=0;
-    while(cin>>x && i<100)
-    {
-        best[i++]=x;
-    }
-    sort(best,best+100);
-    reverse(best,best+100);
+    QFile file("score.txt") ;
+        QString r ;
+        r="";
+        int k=1 ;
 
-    string r="";
-    for(int k=0;k<5;k++)
-    {
-        r+="Score ";
-        r+=to_string(k+1);
-        r+=": ";
-        if(best[k]>9)
-            r+=to_string(best[k]);
-        else
-        {
-            r+="0"+to_string(best[k]);
-        }
-        r+="\n";
-    }
+      file.open(QIODevice::ReadOnly | QIODevice::Text);
+
+            QTextStream flux(&file);
+            while(!flux.atEnd() && k<=5)
+            {
+                QString temp = flux.readLine();
+                r+="score ";
+                r+=QString::number(k);
+                r+=" : ";
+                if(temp.toInt()>9)
+                   r+=temp;
+               else
+               {
+                   r+="0"+temp;
+               }
+                r+="\n";
+                k++ ;
+            }
+            if(k<=5)
+            {
+              for(int i=k;i<=5;i++)
+              {
+               r+="score ";
+               r+=QString::number(i);
+               r+=" : 00 \n" ;
+              }
+            }
+
+
+            file.close();
+
+
     score_page = new QWidget();
     score_page->setFixedSize(320,500);
     score_page->setWindowTitle("ScoreBoard");
@@ -202,7 +216,7 @@ void menu:: score()
     bg->raise();
     QLabel *board =  new QLabel(score_page);
     board->setGeometry(0,250,320,250);
-    QString text=QString(r.c_str());
+    QString text=r ;
     board->setText(text);
     board->setAlignment(Qt::AlignCenter);
     board->setFont(QFont("verdana",20,5,false));

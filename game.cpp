@@ -4,6 +4,8 @@
 #include <QTime>
 #include <QTimer>
 #include <QDebug>
+#include <QFile>
+#include <QString>
 #include "bits/stdc++.h"
 using namespace std;
 
@@ -510,13 +512,56 @@ void game::keyPressEvent ( QKeyEvent * event)
 
 }
 
+bool wayToSort(int i, int j) { return i > j; }
+
+
+void game::write(){
+
+          QFile file("score.txt");
+          if(file.open(QIODevice::Append | QIODevice::Text)) // ajout de score dans le fichier
+          {
+             QTextStream stream(&file);
+             stream << score << endl;
+             file.close();
+          }
+
+          std::vector<int> vec;
+
+          if(file.open(QIODevice::ReadOnly | QIODevice::Text)) // remplir vec par les scores
+          {
+              QTextStream flux(&file);
+              while(!flux.atEnd())
+              {
+                  QString temp = flux.readLine();
+                   vec.push_back( temp.toInt() ) ;
+              }
+
+              file.close();
+          }
+          std::sort(vec.begin(),vec.end(), wayToSort); // trier vec
+
+       file.remove() ;   // supprimer le fichier
+
+          QFile fichier("score.txt");   // le recréer
+
+         for(unsigned int i=0;i<vec.size();i++) {
+
+             if(fichier.open(QIODevice::Append | QIODevice::Text)) // ajout de scores triés
+             {
+             QTextStream stream(&fichier);
+             stream << vec[i] << endl;
+             fichier.close();
+             }
+          }
+
+
+
+}
+
 void game::win()
 {
     timer->stop();
-    best.push_back(score);
-    freopen("score.txt","a+",stdout);
-    for(unsigned int i=0;i<best.size();i++)
-      cout<<best[i]<<"\n";
+    write();
      time=0;
      if(gameMute==0)
      {
