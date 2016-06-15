@@ -641,4 +641,7 @@ void game::My_timer()
     scoring->setText(to_string(score).c_str());
 
 }
+game::~game()
+{
 
+}

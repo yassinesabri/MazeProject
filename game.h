@@ -25,6 +25,7 @@ class game : public QWidget
 public:
     int x_position=0,y_position=0,time,score=100,initial;
     game(int lvl=0, int avtr=0);
+    ~game();
     void set_game(int lvl,int avtr);
     void generate_maze();
     void win();

@@ -223,7 +223,9 @@ void menu:: score()
     board->setStyleSheet("QLabel {color : white; }");
     board->raise();
     score_page->show();
-
 }
 
+menu::~menu()
+{
 
+}

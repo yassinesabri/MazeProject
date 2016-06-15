@@ -16,6 +16,7 @@ class menu : public QWidget
     Q_OBJECT
 public:
     menu(QWidget *parent = 0);
+    ~menu();
 private:
     QPushButton *play_button;
     QPushButton *about_button;
@@ -30,7 +31,6 @@ private:
     static int is_muted;
     QComboBox *avatar;
     QPushButton *score_list;
-    QLabel *score1,*score2,*score3,*score4,*score5;
 
 
 signals:
