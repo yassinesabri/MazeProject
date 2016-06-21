@@ -39,6 +39,7 @@ game::game(int lvl,int avtr)
     solve_game->setCursor(Qt::PointingHandCursor);
     solve_game->setIcon(QIcon(":/img/solve.png"));
     solve_game->setIconSize(QSize(150,40));
+    solve_game->setEnabled(0);
     solve_game->raise();
     QObject::connect(solve_game,SIGNAL(clicked(bool)),this,SLOT(solve()));
 
@@ -261,9 +262,9 @@ void game::set_game(int lvl, int avtr)
 {
     switch(lvl)
     {
-        case 0:{dim=10;maze = new SideWinder(dim,dim);hint_number=1;time=20;initial=20;break;}
-        case 1:{dim=18;maze = new Prim(dim,dim);hint_number=2;time=45;initial=45;break;}
-        case 2:{dim=25;maze = new growing_tree(dim,dim);hint_number=3;time=75;initial=75;break;}
+        case 0:{dim=10;maze = new SideWinder(dim,dim);hint_number=1;time=20;initial=20;solve_begin=11;break;}
+        case 1:{dim=18;maze = new Prim(dim,dim);hint_number=2;time=45;initial=45;solve_begin=26;break;}
+        case 2:{dim=25;maze = new growing_tree(dim,dim);hint_number=3;time=75;initial=75;solve_begin=41;break;}
     }
 
     //set empty Pixmap : switching in term of cells
@@ -607,7 +608,8 @@ void game::lose()
 
 void game::My_timer()
 {
-
+    if(time<=solve_begin)
+        solve_game->setEnabled(1);
     if(time==0)
     {
         lose();

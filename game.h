@@ -23,7 +23,7 @@ class game : public QWidget
 {
     Q_OBJECT
 public:
-    int x_position=0,y_position=0,time,score=100,initial;
+    int x_position=0,y_position=0,time,score=100,initial,solve_begin;
     game(int lvl=0, int avtr=0);
     ~game();
     void set_game(int lvl,int avtr);

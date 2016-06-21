@@ -91,21 +91,29 @@ void Maze::solve_maze(int i,int j)
             set_bit(BACKTRACK,i,j);
             //cout << i << "," << j <<endl;
         }
-        if((cell[i][j]&1) && (is_safe(i-1,j))) //CHECK UP
-            i--;
-        else if((cell[i][j]&2) && (is_safe(i+1,j))) //CHECK DOWN
+        if((cell[i][j]&2) && (is_safe(i+1,j))) //CHECK DOWN
             i++;
+        else if((cell[i][j]&1) && (is_safe(i-1,j))) //CHECK UP
+            i--;
         else if((cell[i][j]&4) && (is_safe(i,j+1))) //CHECK RIGHT
             j++;
         else if((cell[i][j]&8) && (is_safe(i,j-1))) //CHECK LEFT
             j--;
         else
         {
-            //backtracking
-            chemin.pop();
-            i=chemin.top().first;
-            j=chemin.top().second;
-            //cout << i << "," << j <<endl;
+            if(chemin.empty())
+            {
+                return; //no solution
+            }
+            else
+            {
+                //backtracking
+                chemin.pop();
+                i=chemin.top().first;
+                j=chemin.top().second;
+                //cout << i << "," << j <<endl;
+            }
+
         }
     }
     chemin.push(make_pair(i,j)); //ADD THE DESTINATION(n-1,n-1) TO THE STACK
